@@ -1,7 +1,14 @@
 # InstaKilo - An0r3w
-By specifying someone's Instagram username or ID, their Instagram profile will be saved into your directory.
+- By specifying someone's Instagram username their Instagram profile will be saved into your directory.
+- By entering someone's Instagram ID their Instagram username will show up.
+- *Works on Windows and Linux.*
+When viewing code snippets in this README, it's recommended to use a monospaced font like `Roboto Mono` for better readability.
+<details>
+<summary>What is an Instagram ID?</summary>
 
-*Works on Windows and Linux.*
+- An Instagram user or profile ID is a unique numeric identifier for an Instagram account, created once during the setup of a new Instagram account. In addition to a unique ID, an Instagram account also has a unique username. The difference is that an Instagram ID cannot be changed, while a username can be modified - [ommentpicker.com](https://commentpicker.com/instagram-user-id.php)
+</details>
+
 # Requirements
 ```powershell
 sudo apt update -y && sudo apt upgrade -y
