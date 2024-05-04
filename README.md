@@ -2,7 +2,6 @@
 - By specifying someone's Instagram username their Instagram profile will be saved into your directory.
 - By entering someone's Instagram ID their Instagram username will show up.
 - *Works on Windows and Linux.*
-When viewing code snippets in this README, it's recommended to use a monospaced font like `Roboto Mono` for better readability.
 <details>
 <summary>What is an Instagram ID?</summary>
 
