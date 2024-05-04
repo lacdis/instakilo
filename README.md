@@ -1,5 +1,5 @@
 # InstaKilo - An0r3w
-By specifying someone's Instagram username or id, their instagram profile will be saved into your directory.
+By specifying someone's Instagram username or ID, their Instagram profile will be saved into your directory.
 
 *Works on Windows and Linux.*
 # Requirements
