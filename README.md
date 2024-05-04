@@ -20,7 +20,7 @@ pip3 install requests requests[socks]
 ```
 # Installation
 ```powershell
-curl -o instakilo.py https://raw.githubusercontent.com/An0r3w/instakilo/main/instakilo.py
+curl -OJL https://raw.githubusercontent.com/An0r3w/instakilo/main/instakilo.py
 ```
 # Usage
 ```
