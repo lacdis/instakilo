@@ -9,12 +9,15 @@
 </details>
 
 # Requirements
+- Updating `Linux command`
 ```powershell
 sudo apt update -y && sudo apt upgrade -y
 ```
+- Installing Python version 3 `Linux command`
 ```powershell
 sudo apt install python3 python3-pip
 ```
+- Installing requirements `Linux & Windows command`
 ```powershell
 pip3 install requests requests[socks]
 ```
