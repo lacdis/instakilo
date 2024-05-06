@@ -25,6 +25,10 @@ pip3 install requests requests[socks]
 ```powershell
 curl -OJL https://raw.githubusercontent.com/An0r3w/instakilo/main/instakilo.py
 ```
+# Usage
+```
+python3 instakilo.py
+```
 # Output Example
 <details open>
   <summary><b><code>./username-instakot</code></b></summary>
@@ -35,10 +39,6 @@ curl -OJL https://raw.githubusercontent.com/An0r3w/instakilo/main/instakilo.py
 - <code><b>./username-instako/</b>username-related_profiles.txt</code>
 </details>
 
-# Usage
-```
-python3 instakilo.py
-```
 # Screenshots
 ![instakilo_ss_69](https://github.com/An0r3w/instakilo/assets/168315022/0b03da32-b94c-4b68-912d-36120375d4ce)
 ![instakilo_ss_96](https://github.com/An0r3w/instakilo/assets/168315022/63b3884f-a455-4261-b1c8-3a9d46d818e2)
