@@ -1,68 +1,89 @@
 try:
     # Modules
     from string import ascii_letters, digits
-    from os.path import basename, exists
-    from sys import maxsize, executable
     from random import shuffle, choices
-    from platform import system as syst
+    from os import system, mkdir, _exit
+    from threading import Thread, Lock
+    from os.path import exists, join
+    from sys import maxsize
     from json import dumps
     from time import sleep
-    from os import getpid
     from re import match
-    import threading
+    import datetime
     import requests
 
 
 
 
-    # Optional Variables
-    proxy_type = "socks4" # Socks4 usually works best
-    http_timeout = 15 # Seconds
-    threading_speed = 0.150 # Seconds
-
-
-
-
-    # Colors
-    z, r, g, y, p, m0= "\033[0m", "\033[1;31m", "\033[1;32m", "\033[1;33m", "\033[1;35m", "\033[1;37m"
-
-
-
-
     # Standard Variables
-    proxy_lists_url = "https://raw.githubusercontent.com/An0r3w/db/main/proxy_lists"
-    credit = p+"InstaKilo - An0r3w"
-    python = basename(executable)
-    progress_threading = True
-    in_process_threads = 0
-    done_threads = 0
-    PID = getpid()
+    user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    default_headers = {"User-Agent":user_agent,"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8","Accept-Language": "en-US,en;q=0.9","Accept-Encoding": "gzip, deflate, br"}
+    z, g, b, r, w, o, y, q = '\033[0m', '\033[1;32m', '\033[1;34m', '\033[1;91m', '\033[1;97m', '\033[38;5;208m', '\033[38;2;255;255;0m', '\033[38;2;255;255;204m'
+    db, proxy_type = "https://raw.githubusercontent.com/An0r3w/db/main/", ''
+    done_threads, r_space = 0, ' ' * 15
+    threading_speed = 0.150
+    threading = True
 
 
 
 
-    # Notification Functions
-    def cm(txt): print(y+"[*] "+m0+txt)
-    def pm(txt): print(g+"[+] "+m0+txt)
-    def nm(txt): print(r+"[-] "+m0+txt)
-    def em(txt):
-        print(r+"[!] "+m0+txt+r+'.'+z)
-        raise SystemExit
+    # CLI Functions
+    def em(text): print(f"{r_space}{w}[\033[1;31m!{w}] {text}{r},{w} Terminating Process{r}.\n{z}"); exit(1)
+    def im(text): return input(f"{r_space}{w}[{q}?{w}] {text+q}:{z}").replace(' ', '').lower()
+    def tm(text): print(f"{r_space}{w}[{b}@{w}] {text}")
+    def cm(text): print(f"{r_space}{w}[{y}*{w}] {text}")
+    def pm(text): print(f"{r_space}{w}[{g}+{w}] {text}")
+    def rm(text): print(f"{r_space}{w}[{r}-{w}] {text}")
 
 
 
 
-    # Kill process function
-    def die():
-        if syst() == "Windows":
-            import ctypes
-            process_handle = ctypes.windll.kernel32.OpenProcess(1, False, PID)
-            ctypes.windll.kernel32.TerminateProcess(process_handle, -1)
-            ctypes.windll.kernel32.CloseHandle(process_handle)
+    # Get Proxy List Function
+    def get_proxy_list():
+        global proxy_type
+        proxy_type = im(f"Proxy Type ({o}1.{w} Socks4, {o}2.{w} Socks5)")
+
+
+        if proxy_type in ['2', "socks5"]:
+            db_proxy_list = db+"socks5"
+            cm("Proxy Type (Socks5)")
+
         else:
-            from os import kill
-            import signal
-            kill(PID, signal.SIGKILL)
+            db_proxy_list = db+"socks4"
+            cm("Proxy Type (Socks4)")
+            proxy_type = "socks4"
+
+
+
+        cm("Requesting a Proxy List...")
+        for attempt in range(5):
+            try:
+                resp_all_proxy_lists = requests.get(db_proxy_list, headers=default_headers)
+
+
+                if resp_all_proxy_lists.status_code == 200:
+                    all_proxy_lists = resp_all_proxy_lists.text.splitlines()
+                    shuffle(all_proxy_lists)
+
+                    for db_proxy_list in all_proxy_lists:
+                        resp_proxy_list = requests.get(db_proxy_list, headers=default_headers)
+
+                        if resp_proxy_list.status_code == 200:
+                            proxy_list = resp_proxy_list.text.splitlines()
+                            pm(f"{str(len(proxy_list))} Proxies Achieved")
+                            return proxy_list
+
+                    em("Failed to Achieve a Proxy List")
+
+                elif attempt == 4:
+                    em("Failed to Achieve a Proxy List")
+
+
+            except requests.exceptions.Timeout:
+                continue
+
+            except requests.exceptions.ConnectionError:
+                em("Check Your Internet Connection")
 
 
 
@@ -76,10 +97,187 @@ try:
 
 
 
-    # Info request function
-    def ig_req(username:str, proxy:str):
-        global done_threads, progress_threading
+    # Return Yes or No Function By Bool Function
+    def yn(_):
+        if _:return "Yes"
+        return "No"
+
+
+
+
+    # Saving general info function
+    def save_general_info(folder_name, info, username):
+        general_file_content = f"《═══════════════》{username}《═══════════════》\n"
+        general_file_content += "Original Profile Picture  ☠  «"+info["profile_pic_url_hd"]+'»\n\n'
+        general_file_content += "Full Name  ☠  «"+info["full_name"]+'»\n'
+
+
+        if info["category_name"] != None: 
+            general_file_content += "Category  ☠  «"+info["category_name"]+'»\n'
+
+        general_file_content += "Bio  ☠  «"+info["biography"].replace('\n', "\\n")+'»\n\n'
+        general_file_content += "Posts  ☠  «"+str(info["edge_owner_to_timeline_media"]["count"])+'»\n'
+        general_file_content += "Followers  ☠  «"+str(info["edge_followed_by"]["count"])+'»\n'
+        general_file_content += "Following  ☠  «"+str(info["edge_follow"]["count"])+'»\n\n'
+
+
+        if len(info["bio_links"]) > 0:
+            link_num = 1
+            general_file_content += "Bio Links  ↯\n"
+
+            for link in info["bio_links"]:
+                general_file_content += f"\t{str(link_num)}.\n"; link_num += 1
+                general_file_content += "\t\t☠  «"+link["title"]+'»\n'
+                general_file_content += "\t\t☠  «"+link["lynx_url"]+'»\n'
+                general_file_content += "\t\t☠  «"+link["url"]+'»\n'
+                general_file_content += "\t\t☠  «"+link["link_type"]+'»\n'
+
+            general_file_content += "\n"
+
+
+        general_file_content += "Private Account  ☠  «"+yn(info["is_private"])+'»\n'
+        general_file_content += "Verified Account  ☠  «"+yn(info["is_verified"])+'»\n'
+        general_file_content += "Recent Account  ☠  «"+yn(info["is_joined_recently"])+'»\n'
+        general_file_content += "Professional Account  ☠  «"+yn(info["is_professional_account"])+'»\n'
+        general_file_content += "Supervised User  ☠  «"+yn(info["is_supervised_user"])+'»\n'
+
+
+        if len(info["pronouns"]) > 0:
+            general_file_content += "\nPronouns  ↯\n"
+
+            for pronoun in info["pronouns"]:
+                general_file_content += "\t☠  «"+pronoun+'»\n'
+
+            general_file_content += "\n"
+
+
+        general_file_content += "Business Account  ☠  «"+yn(info["is_business_account"])+'»\n'
+
+        if info["is_business_account"]:
+            general_file_content += "Contact Method  ☠  «"+info["business_contact_method"]+'»\n'
+            general_file_content += "E-mail  ☠  «"+info["business_email"]+'»\n'
+            general_file_content += "Phone  ☠  «"+info["business_phone_number"]+'»\n'
+
+
+        general_file_content += "\nID  ☠  «"+info["id"]+'»\n'
+
+        with open(join(folder_name, username+"-general.txt"), 'w') as file_general:
+            file_general.write(general_file_content)
+            file_general.close()
+
+
+
+
+    # Save posts function
+    def save_posts(folder_name, info, username):
+        posts_file_content, post_num = '', 0
+        posts = info["edge_owner_to_timeline_media"]["edges"]
+
+
+
+        for postx in posts:
+            post_num += 1
+            post = postx["node"]        
+            posts_file_content += f"《═══════════════》{str(post_num)}《═══════════════》\n"
+
+
+            if post["__typename"] == "GraphImage": post_type = "Image"; media_src = post["display_url"]
+            elif post["__typename"] == "GraphVideo": post_type = "Video"; media_src = post["video_url"]
+            elif post["__typename"] == "GraphSidecar": post_type = "Carousel"; media_src = post["edge_sidecar_to_children"]["edges"]
+            else: post_type = "Unknown"
+
+            posts_file_content += "Post Type  ☠  «"+post_type+"»\n"
+            posts_file_content += "Posted on  ☠  «"+str(datetime.datetime.fromtimestamp(post["taken_at_timestamp"]))+"»\n"
+            if post["__typename"] != "GraphSidecar": posts_file_content += "Original Media  ☠  «"+media_src+"»"
+
+
+            else:
+                media_num = 0
+                posts_file_content += "\nOriginal Media  ↯"
+
+                for media in media_src:
+                    media = media["node"]
+                    media_num += 1
+                    posts_file_content += f'\n\t{media_num}.'
+                    if media["__typename"] == "GraphVideo":
+                        posts_file_content += f"\n\t\t☠  «Video»"
+                        posts_file_content += f'\n\t\t☠  «'+media["video_url"]+"»"
+                    elif media["__typename"] == "GraphImage":
+                        posts_file_content += f"\n\t\t☠  «Image»"
+                        posts_file_content += f'\n\t\t☠  «'+media["display_url"]+"»"
+                    if media["accessibility_caption"] != None: posts_file_content += f'\n\t\t☠  «'+media["accessibility_caption"]+"»"
+
+                posts_file_content += '\n'
+
+
+            posts_file_content += "\nShare URL  ☠  «"+"https://www.instagram.com/p/"+post["shortcode"]+"»"
+
+            try: posts_file_content += "\nCaption  ☠  «"+post["edge_media_to_caption"]["edges"][0]["node"]["text"]+"»"
+            except:None
+
+            if post["accessibility_caption"] != None:
+                posts_file_content += "\nAccessibility Caption  ☠  «"+post["accessibility_caption"]+"»"
+
+            if post["location"] != None:
+                posts_file_content += "\nLocation  ☠  «"+post["location"]["name"]+"»"
+
+
+            if len(post["edge_media_to_tagged_user"]["edges"]) != 0:
+                tagged_num = 0
+                posts_file_content += "\n\nTagged  ↯"
+
+                for tagged_user in post["edge_media_to_tagged_user"]["edges"]:
+                    tagged_num += 1
+                    tagged_user = tagged_user["node"]["user"]
+
+                    posts_file_content += f'\n\t{tagged_num}.'
+                    posts_file_content += f'\n\t\t☠  «'+tagged_user["username"]+"»"
+                    posts_file_content += f'\n\t\t☠  «'+tagged_user["id"]+"»"
+                    posts_file_content += f'\n\t\t☠  «'+tagged_user["profile_pic_url"]+"»"
+
+                posts_file_content += '\n'
+
+
+            if post_num != info["edge_owner_to_timeline_media"]["count"]: posts_file_content += "\n\n\n"
+            else: posts_file_content += '\n'
+
+
+
+        with open(join(folder_name, username+"-posts.txt"), 'w') as file_posts:
+            file_posts.write(posts_file_content)
+            file_posts.close()
+
+
+
+
+    # Save related profiles function
+    def save_related_profiles(folder_name, info, username):
+        related_profiles_file_content, rp_num = '', 0
+        related_profiles = info["edge_related_profiles"]["edges"]
+
+        for rp in related_profiles:
+            rp = rp["node"]
+            rp_num += 1
+            related_profiles_file_content += f"《═══════════════》{str(rp_num)}《═══════════════》\n"
+            related_profiles_file_content += f"Username  ☠  «"+rp["username"]+"»\n"
+            related_profiles_file_content += f"Full Name  ☠  «"+rp["full_name"]+"»\n"
+            related_profiles_file_content += f"Profile Picture  ☠  «"+rp["profile_pic_url"]+"»\n"
+            related_profiles_file_content += f"Private Account  ☠  «"+yn(rp["is_private"])+"»\n"
+            related_profiles_file_content += f"Verified Account  ☠  «"+yn(rp["is_verified"])+"»\n"
+            if rp != related_profiles[-1]["node"]: related_profiles_file_content += '\n'
+
+        with open(join(folder_name, username+"-related_profiles.txt"), 'w') as file_related_profiles:
+            file_related_profiles.write(related_profiles_file_content)
+            file_related_profiles.close()
+
+
+
+
+    # Get Profile By Username Thread Function
+    def get_profile_by_username_thread(proxy, username, lock):
+        global done_threads, threading
         TOKENS = generate_tokens()
+
         resp = requests.get(
             "https://www.instagram.com/api/v1/users/web_profile_info/?username="+username,
             headers = {
@@ -91,182 +289,138 @@ try:
                 "Referer": "https://www.instagram.com/"+username+"/", 
                 "Referrer-Policy": "strict-origin-when-cross-origin"
             },
-            proxies = {proxy_type:proxy},
-            timeout = http_timeout
-        )
-        
-        
+            proxies = {proxy_type:proxy}
+        ); done_threads += 1
+
+
 
         if resp.status_code == 200:
             resp_json = resp.json()["data"]["user"]
-            if resp_json == None:
-                T = threading.Thread(target=em, args=["User Not Found"])
-                T.daemon = True
-                print()
-                T.start()
-                die()
-            content = dumps(resp_json).replace("\\u0026", '&')
-            file_name = username+"-instakilo.json"
 
+            if resp_json == None:
+                T = Thread(target=em, args=["User Not Found"])
+                T.daemon = True
+                T.start()
+                _exit(1)
+
+            resp_sorted_json = dict(sorted(resp_json.items()))
+            content = dumps(resp_sorted_json, indent=4).replace("\\u0026", '&')
+            folder_name = username+"-instakilo"
+            threading = False
 
             for x in range(maxsize):
-                if x!=0:file_name = username+"-instakilo("+str(x)+").json"
-                
-                if exists(file_name) == False and progress_threading:
-                    progress_threading = False
-                    file = open(file_name, 'w')
-                    file.write(content)
-                    file.close()
-                    print()
-                    pm("Info Recieved Successfully, Saved As `"+file_name+'`')
-                    print(z, end='')
-                    die()
-
+                if x!=0:folder_name = username+"-instakilo("+str(x)+")"
+                if exists(folder_name) == False:
+                    with lock:
+                        mkdir(folder_name)
+                        file_json = open(join(folder_name, username+"-json.json"), 'w')
+                        file_json.write(content+'\n')
+                        file_json.close()
+                        save_general_info(folder_name, resp_json, username)
+                        if resp_json["edge_owner_to_timeline_media"]["count"] != 0 and resp_json["is_private"] == False:
+                            save_posts(folder_name, resp_json, username)
+                        if len(resp_json["edge_related_profiles"]["edges"]) != 0:
+                            save_related_profiles(folder_name, resp_json, username)
+                        pm("Saved as `"+folder_name+'`'); print()
+                        _exit(0)
 
 
         elif resp.status_code == 404:
-            print()
-            T = threading.Thread(target=em, args=["User Not Found"])
+            T = Thread(target=em, args=["User Not Found"])
             T.daemon = True
-            print()
             T.start()
-            die()
-        done_threads += 1
+            _exit(1)
 
 
 
 
-    # Get info function
-    def get_info(username:str, proxies:list):
-        global in_process_threads
-        for proxy in proxies:
-            if progress_threading:
-                status_message = f"\r{y}Threading ({in_process_threads}/{str(len(proxies))})"+z
-                print(status_message[:min(len(status_message), 50)], end='')
-                T = threading.Thread(target=ig_req, args=[username, proxy])
-                T.daemon = True
-                T.start()
-                in_process_threads += 1
-                sleep(threading_speed)
-            else:
-                break
-        print(); pm("Threading completed")
-
-
-
-
-    # Get proxies function
-    def proxiespls():
-        while 1:
-            cm("Requesting proxy lists")
-            pl_response = requests.get(proxy_lists_url, timeout=http_timeout)
-
-            if pl_response.status_code != 200:
-                nm("Failed to find proxy lists, trying again")
-                continue
-
-
-            try: pl_l = pl_response.json()[proxy_type]
-            except: nm("Invalid response from server, trying again"); continue
-            shuffle(pl_l)
-
-
-
-            for link in pl_l:
-                cm("Requesting a proxy list")
-                pl_response = requests.get(link, timeout=http_timeout)
-
-
-                if pl_response.status_code != 200:
-                    nm("Failed to find proxy lists, trying Again")
-                    continue
-
-                else:
-                    proxies = pl_response.text.splitlines()
-                    pm("Recieved "+str(len(proxies))+" Proxies")
-                    return proxies
-        em("Failed to achieve a proxy list")
-
-
-
-    # Username request function
-    def ig_id_req(id:str, proxy:str):
-        global done_threads, progress_threading
+    # Get Profile By Username Thread Function
+    def get_profile_by_id_thread(proxy, id, lock):
+        global done_threads
         resp = requests.get(
             r"https://www.instagram.com/graphql/query/?query_hash=c9100bf9110dd6361671f113dd02e7d6&variables={%22user_id%22:%22"+id+r"%22,%22include_chaining%22:false,%22include_reel%22:true,%22include_suggested_users%22:false,%22include_logged_out_extras%22:false,%22include_highlight_reels%22:false,%22include_related_profiles%22:false}",
-            proxies={proxy_type:proxy},
-            timeout=http_timeout
+            proxies={proxy_type:proxy}
         )
 
 
         if resp.status_code == 200:
             try:
-                print(); pm(resp.json()["data"]["user"]["reel"]["user"]["username"])
-                print(z, end='')
-                die()
+                with lock:
+                    pm(resp.json()["data"]["user"]["reel"]["user"]["username"]); print()
+                    _exit(0)
             except:
-                None
-
-        elif resp.status_code == 404:
-            print()
-            T = threading.Thread(target=em, args=["User Not Found"])
-            T.daemon = True
-            T.start()
-            die()
-        done_threads += 1
-
-
-
-    # Get username function
-    def get_username(id:str , proxies:list):
-        global in_process_threads
-        for proxy in proxies:
-            if progress_threading:
-                status_message = f"\r{y}Threading ({in_process_threads}/{str(len(proxies))})"+z
-                print(status_message[:min(len(status_message), 50)], end='')
-                T = threading.Thread(target=ig_id_req, args=[id, proxy])
+                T = Thread(target=em, args=["User Not Found"])
                 T.daemon = True
                 T.start()
-                in_process_threads += 1
+                _exit(1)
+
+        elif resp.status_code == 404:
+            T = Thread(target=em, args=["User Not Found"])
+            T.daemon = True
+            T.start()
+            _exit(1)
+
+
+
+
+    # Get Profile By Username Function
+    def start_threading(method, username_or_id, proxies):
+        global threading
+        cm("Threading...")
+        lock = Lock()
+        for proxy in proxies:
+            if threading:
+                if method == "username": T = Thread(target=get_profile_by_username_thread, args=[proxy, username_or_id, lock])
+                else: T = Thread(target=get_profile_by_id_thread, args=[proxy, username_or_id, lock])
+                T.daemon = True
+                T.start()
                 sleep(threading_speed)
             else:
-                break
-        print(); pm("Threading completed")
+                while 1: None
+        pm("Done Threading")
+
+        while len(proxies) != done_threads: None
+        em("Mission Failed")
+
 
 
 
     # Main
-    if __name__ == "__main__":
-        print(credit)
-        method = input(m0+"Method (1: username, 2: id):").replace(' ', "").lower()
+    system("clear||cls"); print("""\n\t::::                             ::    ::      ::        \n\t ::                              ::   ::       ::        \n\t ::                  ::          ::  ::        ::        \n\t :+   :+ :    +:+   :+:+   :+:   +: +:     :+  :+   :+:  \n\t +:   +:+:+  +: +:   +:   +: +:  +:+:+         +:  +:+:+ \n\t +#   +# +#   +#     +#      +#  +#  +#    +#  +#  +# +# \n\t +#   +# +#    +#    +#    +#+#  +#   +#   +#  +#  +# +# \n\t #+   #+ #+  #+ #+   #+   #+ #+  #+    #+  #+  #+  #+ #+ \n\t####  ## ##   ###    ###   ####  ##    ##  ##  ##   ###\n\033[0m""".replace(':', "\033[38;2;255;182;193m:").replace('+', "\033[38;2;255;105;180m+").replace('#', "\033[38;2;255;20;147m#"))
+    tm("Github (An0r3w)")
+    tm("E-mail (an0r3w@hotmail.com)")
+    method = im(f"Method ({o}1.{w} Username, {o}2.{w} ID)")
 
-        if method in ['1', "username"]:
-            input_username = input(m0+"Username:").replace(' ', '').lower()
-            if match(r'^[a-zA-Z0-9._]{1,30}$', input_username):
-                pm("Valid username")
-                proxies = proxiespls()
-                get_info(input_username, proxies)
-                cm("Waiting for response..")
-                while in_process_threads != done_threads: None
-                em("Mission Failed")
-            else:
-                em("Invalid Username")
-        
-        elif method in ['2', "id"]:
-            input_id = input(m0+"ID:").replace(' ', '').lower()
-            if (match(r'^\d+$', input_id)):
-                pm("Valid ID")
-                proxies = proxiespls()
-                get_username(input_id, proxies)
-                while in_process_threads != done_threads: None
-                em("Mission Failed")
-            else:
-                em("Invalid ID")
 
+
+    if method in ['1', "username"]:
+        username = im("Username")
+
+        if match(r"^[a-zA-Z0-9._]{1,30}$", username):
+            pm("Valid Username")
+            proxies = get_proxy_list()
+            start_threading("username", username, proxies)
         else:
-            em("Invalid Input")
+            em("Invalid Username")  
 
 
-except (KeyboardInterrupt, SystemExit):
-    print(z, end='')
-    die()
+    elif method in ['2', "id"]:
+        id = im("ID")
+
+        if match(r"^\d+$", id):
+            pm("Valid ID")
+            proxies = get_proxy_list()
+            start_threading("id", id, proxies)
+        else:
+            em("Invalid ID")
+
+
+    else:
+        em("Invalid Input")  
+
+
+
+
+# Exit Handler
+except (SystemExit, KeyboardInterrupt):
+    print("\n\033[1;31mGoodbye!.\033[0m")
