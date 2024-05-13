@@ -29,7 +29,7 @@ curl -OJL https://raw.githubusercontent.com/An0r3w/instakilo/main/instakilo.py
 ```
 python3 instakilo.py
 ```
-# Output Example
+# Result Example
 <details open>
   <summary><b><code>./username-instakot</code></b></summary>
 
