@@ -33,7 +33,7 @@ python3 instakilo.py
 <details open>
   <summary><b><code>./username-instakot</code></b></summary>
 
-- <code><b>./username-instako/</b>username-json.txt</code>
+- <code><b>./username-instako/</b>username-json.json</code>
 - <code><b>./username-instako/</b>username-general.txt</code>
 - <code><b>./username-instako/</b>username-posts.txt</code>
 - <code><b>./username-instako/</b>username-related_profiles.txt</code>
