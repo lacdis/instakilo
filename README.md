@@ -5,7 +5,7 @@
 <details>
 <summary>What is an Instagram ID?</summary>
 
-- An Instagram user or profile ID is a unique numeric identifier for an Instagram account, created once during the setup of a new Instagram account. In addition to a unique ID, an Instagram account also has a unique username. The difference is that an Instagram ID cannot be changed, while a username can be modified - [ommentpicker.com](https://commentpicker.com/instagram-user-id.php)
+- An Instagram user or profile ID is a unique numeric identifier for an Instagram account, created once during the setup of a new Instagram account. The difference is that an Instagram ID cannot be changed, while a username can be modified - [ommentpicker.com](https://commentpicker.com/instagram-user-id.php)
 </details>
 
 # Requirements
