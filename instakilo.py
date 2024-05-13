@@ -17,7 +17,7 @@ try:
 
     # Standard Variables
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
-    default_headers = {"User-Agent":user_agent,"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8","Accept-Language": "en-US,en;q=0.9","Accept-Encoding": "gzip, deflate, br"}
+    default_headers = {"User-Agent":user_agent,"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8","Accept-Language":"en-US,en;q=0.9","Accept-Encoding":"gzip, deflate, br"}
     z, g, b, r, w, o, y, q = '\033[0m', '\033[1;32m', '\033[1;34m', '\033[1;91m', '\033[1;97m', '\033[38;5;208m', '\033[38;2;255;255;0m', '\033[38;2;255;255;204m'
     db, proxy_type = "https://raw.githubusercontent.com/An0r3w/db/main/", ''
     done_threads, r_space = 0, ' ' * 15
@@ -298,9 +298,7 @@ try:
             resp_json = resp.json()["data"]["user"]
 
             if resp_json == None:
-                T = Thread(target=em, args=["User Not Found"])
-                T.daemon = True
-                T.start()
+                Thread(target=em, args=["User Not Found"], daemon=True).start()
                 _exit(1)
 
             resp_sorted_json = dict(sorted(resp_json.items()))
@@ -326,9 +324,7 @@ try:
 
 
         elif resp.status_code == 404:
-            T = Thread(target=em, args=["User Not Found"])
-            T.daemon = True
-            T.start()
+            Thread(target=em, args=["User Not Found"], daemon=True).start()
             _exit(1)
 
 
@@ -349,15 +345,11 @@ try:
                     pm(resp.json()["data"]["user"]["reel"]["user"]["username"]); print()
                     _exit(0)
             except:
-                T = Thread(target=em, args=["User Not Found"])
-                T.daemon = True
-                T.start()
+                Thread(target=em, args=["User Not Found"], daemon=True).start()
                 _exit(1)
 
         elif resp.status_code == 404:
-            T = Thread(target=em, args=["User Not Found"])
-            T.daemon = True
-            T.start()
+            Thread(target=em, args=["User Not Found"], daemon=True).start()
             _exit(1)
 
 
