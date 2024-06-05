@@ -1,11 +1,11 @@
 try:
     # Modules
+    from os.path import exists, join, basename
+    from sys import maxsize, argv, executable
     from string import ascii_letters, digits
     from random import shuffle, choices
     from os import system, mkdir, _exit
     from threading import Thread, Lock
-    from os.path import exists, join
-    from sys import maxsize
     from json import dumps
     from time import sleep
     from re import match
@@ -20,9 +20,9 @@ try:
     default_headers = {"User-Agent":user_agent,"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8","Accept-Language":"en-US,en;q=0.9","Accept-Encoding":"gzip, deflate, br"}
     z, g, b, r, w, o, y, q = '\033[0m', '\033[1;32m', '\033[1;34m', '\033[1;91m', '\033[1;97m', '\033[38;5;208m', '\033[38;2;255;255;0m', '\033[38;2;255;255;204m'
     db, proxy_type = "https://raw.githubusercontent.com/An0r3w/db/main/", ''
+    INPUT, INVALID_USAGE, threading = True, False, True
     done_threads, r_space = 0, ' ' * 15
     threading_speed = 0.150
-    threading = True
 
 
 
@@ -41,7 +41,7 @@ try:
     # Get Proxy List Function
     def get_proxy_list():
         global proxy_type
-        proxy_type = im(f"Proxy Type ({o}1.{w} Socks4, {o}2.{w} Socks5)")
+        if INPUT: proxy_type = im(f"Proxy Type ({o}1.{w} Socks4, {o}2.{w} Socks5)")
 
 
         if proxy_type in ['2', "socks5"]:
@@ -154,9 +154,9 @@ try:
         general_file_content += "Business Account  ☠  «"+yn(info["is_business_account"])+'»\n'
 
         if info["is_business_account"]:
-            general_file_content += "Contact Method  ☠  «"+info["business_contact_method"]+'»\n'
-            general_file_content += "E-mail  ☠  «"+info["business_email"]+'»\n'
-            general_file_content += "Phone  ☠  «"+info["business_phone_number"]+'»\n'
+            general_file_content += "Contact Method  ☠  «"+str(info["business_contact_method"])+'»\n'
+            general_file_content += "E-mail  ☠  «"+str(info["business_email"])+'»\n'
+            general_file_content += "Phone  ☠  «"+str(info["business_phone_number"])+'»\n'
 
 
         general_file_content += "\nID  ☠  «"+info["id"]+'»\n'
@@ -377,16 +377,53 @@ try:
 
 
 
+    # Checking Args
+    if len(argv) > 1:
+        INPUT = False
+
+        if len(argv) < 3: 
+            INVALID_USAGE = True
+
+        for arg in argv[1:]:
+            if arg.lower() in ["-socks5", "--socks5", "-s5", "--s5"]:
+                proxy_type = "socks5"
+                argv.remove(arg)
+                break
+
+
+        for arg in range(1, len(argv[1:])):
+            print(argv[arg])
+            if argv[arg].lower() in ["-username", "-u", "--username", "--u"]:
+                username = argv[arg+1]
+                method = '1'
+                break
+            
+            elif argv[arg].lower() in ["-id", "--id"]:
+                id = argv[arg+1]
+                method = '2'
+                break
+            
+            else:
+                INVALID_USAGE = True
+                break
+
+
+
+
     # Main
     system("clear||cls"); print("""\n\t::::                             ::    ::      ::        \n\t ::                              ::   ::       ::        \n\t ::                  ::          ::  ::        ::        \n\t :+   :+ :    +:+   :+:+   :+:   +: +:     :+  :+   :+:  \n\t +:   +:+:+  +: +:   +:   +: +:  +:+:+         +:  +:+:+ \n\t +#   +# +#   +#     +#      +#  +#  +#    +#  +#  +# +# \n\t +#   +# +#    +#    +#    +#+#  +#   +#   +#  +#  +# +# \n\t #+   #+ #+  #+ #+   #+   #+ #+  #+    #+  #+  #+  #+ #+ \n\t####  ## ##   ###    ###   ####  ##    ##  ##  ##   ###\n\033[0m""".replace(':', "\033[38;2;255;182;193m:").replace('+', "\033[38;2;255;105;180m+").replace('#', "\033[38;2;255;20;147m#"))
     tm("Github (An0r3w)")
     tm("E-mail (an0r3w@hotmail.com)")
-    method = im(f"Method ({o}1.{w} Username, {o}2.{w} ID)")
+    if INVALID_USAGE:
+        cm(f"Example: {basename(executable)} {basename(__file__)} -u theweeknd")
+        cm(f"Example: {basename(executable)} {basename(__file__)} -id 266319242")
+        em(f"Invalid Usage")
+    if INPUT: method = im(f"Method ({o}1.{w} Username, {o}2.{w} ID)")
 
 
 
     if method in ['1', "username"]:
-        username = im("Username")
+        if INPUT: username = im("Username")
 
         if match(r"^[a-zA-Z0-9._]{1,30}$", username):
             pm("Valid Username")
@@ -397,7 +434,7 @@ try:
 
 
     elif method in ['2', "id"]:
-        id = im("ID")
+        if INPUT: id = im("ID")
 
         if match(r"^\d+$", id):
             pm("Valid ID")
