@@ -1,4 +1,4 @@
-# <img src="https://github.com/An0r3w/instakilo/assets/168315022/fe46896d-d2d9-49c9-8656-de71c7bfc3ef" alt="instakilo.ico" width="30" height="30"> InstaKilo - An0r3w
+# <img src="https://github.com/An0r3w/instakilo/assets/168315022/b8f14715-3818-483c-92cb-df4d1e67ed2a" alt="instakilo.ico" width="30" height="30"> InstaKilo - An0r3w
 - By specifying someone's Instagram username their Instagram profile will be saved into your directory.
 - By entering someone's Instagram ID their Instagram username will show up.
 - *Works on Windows and Linux.*
