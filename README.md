@@ -29,10 +29,10 @@ curl -OJL https://raw.githubusercontent.com/An0r3w/instakilo/main/instakilo.py
 ```
 python3 instakilo.py
 ```
-```
+```powershell
 python3 instakilo.py -u <Username>
 ```
-```
+```powershell
 python3 instakilo.py -id <ID>
 ```
 # Result Example
