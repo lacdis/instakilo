@@ -90,14 +90,14 @@ try:
 
     # Generate fake tokens function
     def generate_tokens():
-        x_csrftoken = "".join(choices(ascii_letters + digits, k=32))
+        x_csrftoken = "".join(choices(ascii_letters + digits, k=22))
         x_asbd_id = "".join(choices(digits, k=6))
         return [x_csrftoken, x_asbd_id]
 
 
 
 
-    # Return Yes or No Function By Bool Function
+    # Return Yes or No By Bool Function
     def yn(_):
         if _:return "Yes"
         return "No"
@@ -295,7 +295,8 @@ try:
 
 
         if resp.status_code == 200:
-            resp_json = resp.json()["data"]["user"]
+            try: resp_json = resp.json()["data"]["user"]
+            except: return
 
             if resp_json == None:
                 Thread(target=em, args=["User Not Found"], daemon=True).start()
