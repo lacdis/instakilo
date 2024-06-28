@@ -9,13 +9,13 @@
 </details>
 
 # Requirements
-- Updating `Linux`
-```powershell
-sudo apt update -y && sudo apt upgrade -y
-```
 - Installing Python version 3 `Linux`
 ```powershell
 sudo apt install python3 python3-pip
+```
+- Installing Python version 3 `Windows`
+```powershell
+explorer https://apps.microsoft.com/detail/9ncvdn91xzqp
 ```
 - Installing requirements `Linux & Windows`
 ```powershell
@@ -50,4 +50,4 @@ python3 instakilo.py -id <ID>
 ![instakilo_ss_96](https://github.com/An0r3w/instakilo/assets/168315022/63b3884f-a455-4261-b1c8-3a9d46d818e2)
 
 # Issues
-- if the tool is getting slower, that is probably because of your dns resolver that's exposing your IP, try using a tool like [**`proxychains`**](https://github.com/haad/proxychains) to forward all dns requests over a proxy.
+- if the tool is getting slower, that is probably because of your dns resolver that's exposing your IP, try using a tool like [**`proxychains`**](https://github.com/haad/proxychains) which allows you to forward all dns requests over a proxy.
