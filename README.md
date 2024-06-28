@@ -1,4 +1,3 @@
-# NOT WORKING `(instagram changed api)`
 # <img src="https://github.com/An0r3w/instakilo/assets/168315022/b8f14715-3818-483c-92cb-df4d1e67ed2a" alt="instakilo.ico" width="30" height="30"> InstaKilo - An0r3w
 - By specifying someone's Instagram username their Instagram profile will be saved into your directory.
 - By entering someone's Instagram ID their Instagram username will show up.
@@ -49,3 +48,6 @@ python3 instakilo.py -id <ID>
 # Screenshots
 ![instakilo_ss_69](https://github.com/An0r3w/instakilo/assets/168315022/0b03da32-b94c-4b68-912d-36120375d4ce)
 ![instakilo_ss_96](https://github.com/An0r3w/instakilo/assets/168315022/63b3884f-a455-4261-b1c8-3a9d46d818e2)
+
+# Issues
+- if the tool is getting slower, that is probably because of your dns resolver that's exposing your IP, try using a tool like [**`proxychains`**](https://github.com/haad/proxychains) to forward all dns requests over a proxy.
