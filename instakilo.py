@@ -161,7 +161,7 @@ try:
 
         general_file_content += "\nID  ☠  «"+info["id"]+'»\n'
 
-        with open(join(folder_name, username+"-general.txt"), 'w') as file_general:
+        with open(join(folder_name, username+"-general.txt"), 'w', encoding="utf-8") as file_general:
             file_general.write(general_file_content)
             file_general.close()
 
@@ -243,7 +243,7 @@ try:
 
 
 
-        with open(join(folder_name, username+"-posts.txt"), 'w') as file_posts:
+        with open(join(folder_name, username+"-posts.txt"), 'w', encoding="utf-8") as file_posts:
             file_posts.write(posts_file_content)
             file_posts.close()
 
@@ -266,7 +266,7 @@ try:
             related_profiles_file_content += f"Verified Account  ☠  «"+yn(rp["is_verified"])+"»\n"
             if rp != related_profiles[-1]["node"]: related_profiles_file_content += '\n'
 
-        with open(join(folder_name, username+"-related_profiles.txt"), 'w') as file_related_profiles:
+        with open(join(folder_name, username+"-related_profiles.txt"), 'w', encoding="utf-8") as file_related_profiles:
             file_related_profiles.write(related_profiles_file_content)
             file_related_profiles.close()
 
@@ -312,7 +312,7 @@ try:
                 if exists(folder_name) == False:
                     with lock:
                         mkdir(folder_name)
-                        file_json = open(join(folder_name, username+"-json.json"), 'w')
+                        file_json = open(join(folder_name, username+"-json.json"), 'w', encoding="utf-8")
                         file_json.write(content+'\n')
                         file_json.close()
                         save_general_info(folder_name, resp_json, username)
