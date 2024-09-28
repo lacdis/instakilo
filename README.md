@@ -1,4 +1,4 @@
-# <img src="https://github.com/An0r3w/instakilo/assets/168315022/b8f14715-3818-483c-92cb-df4d1e67ed2a" alt="instakilo.ico" width="30" height="30"> InstaKilo - An0r3w
+# <img src="https://github.com/An0r3w/instakilo/assets/168315022/b8f14715-3818-483c-92cb-df4d1e67ed2a" alt="instakilo.ico" width="30" height="30"> InstaKilo - Lacdis
 - By specifying someone's Instagram username their Instagram profile will be saved into your directory.
 - By entering someone's Instagram ID their Instagram username will show up.
 - *Works on Windows and Linux.*
@@ -23,7 +23,7 @@ pip3 install requests requests[socks]
 ```
 # Installation
 ```powershell
-curl -OJL https://raw.githubusercontent.com/An0r3w/instakilo/main/instakilo.py
+curl -OJL https://raw.githubusercontent.com/lacdis/instakilo/main/instakilo.py
 ```
 # Usage
 ```
@@ -46,8 +46,9 @@ python3 instakilo.py -id <ID>
 </details>
 
 # Screenshots
-![instakilo_ss_69](https://github.com/An0r3w/instakilo/assets/168315022/0b03da32-b94c-4b68-912d-36120375d4ce)
-![instakilo_ss_96](https://github.com/An0r3w/instakilo/assets/168315022/63b3884f-a455-4261-b1c8-3a9d46d818e2)
+![arianagrande](https://github.com/user-attachments/assets/6d1266e0-5a9a-448b-b582-ec3e9475e7ee)
+![thisisbillgates](https://github.com/user-attachments/assets/9ccb7695-bbdc-4fdd-b3f7-47c413e3bac0)
+
 
 # Issues
 - if the tool is getting slower, that is probably because of your dns resolver that's exposing your IP, try using a tool like [**`proxychains`**](https://github.com/haad/proxychains) which allows you to forward all dns requests over a proxy.
