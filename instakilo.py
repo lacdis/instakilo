@@ -19,7 +19,7 @@ try:
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
     default_headers = {"User-Agent":user_agent,"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8","Accept-Language":"en-US,en;q=0.9","Accept-Encoding":"gzip, deflate, br"}
     z, g, b, r, w, o, y, q = '\033[0m', '\033[1;32m', '\033[1;34m', '\033[1;91m', '\033[1;97m', '\033[38;5;208m', '\033[38;2;255;255;0m', '\033[38;2;255;255;204m'
-    db, proxy_type = "https://raw.githubusercontent.com/An0r3w/db/main/", ''
+    db, proxy_type = "https://raw.githubusercontent.com/lacdis/db/main/", ''
     INPUT, INVALID_USAGE, threading = True, False, True
     done_threads, r_space = 0, ' ' * 15
     threading_speed = 0.150
@@ -413,8 +413,7 @@ try:
 
     # Main
     system("clear||cls"); print("""\n\t::::                             ::    ::      ::        \n\t ::                              ::   ::       ::        \n\t ::                  ::          ::  ::        ::        \n\t :+   :+ :    +:+   :+:+   :+:   +: +:     :+  :+   :+:  \n\t +:   +:+:+  +: +:   +:   +: +:  +:+:+         +:  +:+:+ \n\t +#   +# +#   +#     +#      +#  +#  +#    +#  +#  +# +# \n\t +#   +# +#    +#    +#    +#+#  +#   +#   +#  +#  +# +# \n\t #+   #+ #+  #+ #+   #+   #+ #+  #+    #+  #+  #+  #+ #+ \n\t####  ## ##   ###    ###   ####  ##    ##  ##  ##   ###\n\033[0m""".replace(':', "\033[38;2;255;182;193m:").replace('+', "\033[38;2;255;105;180m+").replace('#', "\033[38;2;255;20;147m#"))
-    tm("Github (An0r3w)")
-    tm("E-mail (an0r3w@hotmail.com)")
+    tm("Github (lacdis)")
     if INVALID_USAGE:
         cm(f"Example: {basename(executable)} {basename(__file__)} -u theweeknd")
         cm(f"Example: {basename(executable)} {basename(__file__)} -id 266319242")
