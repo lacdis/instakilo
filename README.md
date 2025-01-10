@@ -37,12 +37,12 @@ python3 instakilo.py -id <ID>
 ```
 # Result Example
 <details open>
-  <summary><b><code>./username-instakot</code></b></summary>
+  <summary><b><code>./username-instakilo</code></b></summary>
 
-- <code><b>./username-instakot/</b>username-json.json</code>
-- <code><b>./username-instakot/</b>username-general.txt</code>
-- <code><b>./username-instakot/</b>username-posts.txt</code>
-- <code><b>./username-instakot/</b>username-related_profiles.txt</code>
+- <code><b>./username-instakilo/</b>username-json.json</code>
+- <code><b>./username-instakilo/</b>username-general.txt</code>
+- <code><b>./username-instakilo/</b>username-posts.txt</code>
+- <code><b>./username-instakilo/</b>username-related_profiles.txt</code>
 </details>
 
 # Screenshots
