@@ -15,7 +15,7 @@ sudo apt install python3 python3-pip
 ```
 - Installing Python version 3 `Windows`
 ```powershell
-explorer https://apps.microsoft.com/detail/9ncvdn91xzqp
+explorer https://apps.microsoft.com/detail/9PNRBTZXMB4Z
 ```
 - Installing requirements `Linux & Windows`
 ```powershell
